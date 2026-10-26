@@ -11,3 +11,5 @@ No experiment settings, saved results, statistical definitions or submitted PDFs
 Previous repository state: `bc0a0ebbee814239888831e954300a54cff83c5f`, retained as `pre-maintenance-2026-10-26`.
 
 - Renamed public protocol, control and notebook paths to descriptive experiment names; updated notebook-test paths and added a repository map. Legacy runtime identifiers remain compatible.
+
+- Added the author-provided final report PDF, its checksum and README links.

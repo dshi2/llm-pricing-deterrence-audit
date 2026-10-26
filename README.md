@@ -2,6 +2,8 @@
 
 We test which rival responses make a prescribed price cut unprofitable, then measure how a seller's pricing changes when scripted retaliation is removed.
 
+[Read the research report (PDF)](paper/report.pdf) · [Reproduce tables and figures](REPORTING.md)
+
 ## What this project contributes
 
 1. **A rival-response attribution experiment.** Eight matched continuations cross a prescribed cut versus no cut with neither, either, or both rivals responding. Subtracting each condition's no-cut return isolates its effect on the gain from the cut. Scripted controls check that the measurement recovers individual and joint-only deterrence when those patterns are present.
@@ -89,7 +91,7 @@ Use a stable copy of the run folders. `run_saved_report.py` hashes inputs before
 ## Repository layout
 
 ```text
-paper/       Protocols and scripted-control outputs
+paper/       Final report PDF, protocols and scripted-control outputs
 notebooks/   Rival-response and retaliation-removal launchers; results review
 sprint/      Collection engines and analysis modules
 scripts/     Offline controls, table builders and figure generators
