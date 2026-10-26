@@ -46,6 +46,12 @@ The table and result figure are generated from the bundled [verified exports](re
 python -m scripts.build_readme_results
 ```
 
+## Reproduction options
+
+- **Bundled results:** regenerate the displayed tables and plots from the included, hash-checked CSV exports. No API key or raw journals are needed.
+- **Raw-run analysis:** use the commands below with the original saved journals. The complete raw archive is not bundled yet.
+- **New collection:** launch notebooks make paid model calls; they are not required to reproduce the bundled results.
+
 ## Install and validate
 
 ```bash
@@ -84,6 +90,6 @@ Use a stable copy of the run folders. `run_saved_report.py` hashes inputs before
 
 Author: **Drishti Sharma, Independent**. This standalone repository was exported from the committed sprint source recorded in `provenance/source.json`. The two paper releases retain the same tested shared `sprint` engine and compatibility modules; only the paper-specific launch notebooks are exposed. Shared reporting imports and their regression fixtures retain compatibility modules for the original source tree; these are not additional studies claimed by this paper. No uncommitted launcher edits, API credentials, live outputs or internal manuscript drafts are included.
 
-`provenance/collection-*.tar.gz` preserves source/config snapshots at the original collection pins. Extract these separately when inspecting the original collection code; the submission tag identifies the later reporting release. Do not resume existing journals with changed collection settings.
+`provenance/collection-*.tar.gz` preserves source/config snapshots at the original collection pins. Extract these separately when inspecting the original collection code; the repository history identifies the later reporting release. Do not resume existing journals with changed collection settings.
 
 The pinned market functions and prompt text are fetched from [the Apart starter](https://github.com/poseidon-research/collusion_hackathon), which incorporates [algorithmic_pricing_llms](https://github.com/luciasauer/algorithmic_pricing_llms). Upstream code is not vendored here. Follow upstream license terms. A license grant for the newly authored code has not yet been selected.
