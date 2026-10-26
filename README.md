@@ -1,6 +1,16 @@
 # Which Rival Makes a Price Cut Unprofitable?
 
-Two complementary experiments examine how rival responses affect pricing.
+We test which rival responses make a prescribed price cut unprofitable, then measure how a seller's pricing changes when scripted retaliation is removed.
+
+## What this project contributes
+
+1. **A rival-response attribution experiment.** Eight matched continuations cross a prescribed cut versus no cut with neither, either, or both rivals responding. Subtracting each condition's no-cut return isolates its effect on the gain from the cut. Scripted controls check that the measurement recovers individual and joint-only deterrence when those patterns are present.
+2. **A retaliation-removal experiment.** A separate intervention crosses retained versus removed scripted retaliation with retained versus reset seller context. The primary outcome is the within-parent change in mean seller price. This measures adjustment after a policy change; it does not identify the seller's awareness or decision rule.
+3. **An exploratory evaluation with per-game evidence.** The release reports every eligible game's gains, all parent-game eligibility counts, paired removal effects and uncertainty. Analysis and plotting commands regenerate outputs from saved records without new model calls. The raw-archive release status is stated below.
+
+These are contributions of the implemented design, measurements and evaluation. We do not claim to be the first to use counterfactual pricing experiments or to detect real-world collusion.
+
+## Experimental design
 
 1. **Individual and joint deterrence:** three LLM sellers, matched price-cut/no-cut continuations, and neither, either, or both rivals responding.
 2. **Pricing after retaliation removal:** one LLM seller and a scripted rival; retaliation is retained or removed, crossed with retained or reset context.
@@ -18,13 +28,17 @@ The primary quantities are per-game S, J, M and paired S−J for Experiment 1, a
 | Qwen | 1/4 | +0.0600 | [0.0151, 0.1049] | 7 |
 <!-- RESULTS:END -->
 
-Across five eligible games, none showed the strict joint-only pattern (both individual gains positive, joint gain negative). DeepSeek's aggregate deterrence contrasts have wide intervals; Qwen has only one eligible game, so its Student-t interval is not estimable.
+**One rival was sufficient in four of five eligible games; no game required both.** In the fifth game, the cut remained profitable even with both rivals responding. This describes the observed games, not a population-level absence of joint deterrence. The strict joint-only pattern requires both single-rival gains to be positive and the joint gain negative.
 
-Removing retaliation increased the seller's mean price in the selected calm-checkpoint pairs. These are exploratory estimates, conditional on calm checkpoints—not evidence that the seller learned deterrence. The removal intervals use the planned four-model correction; the pricing-gain intervals retain the separate 16-comparison correction.
+**All eight parent games completed.** DeepSeek had four eligible games; Qwen had one. The three ineligible Qwen games did not meet the threshold for the prescribed cut. Their intervention gains are undefined, not zero, and other possible deviations were not tested. [Per-game evidence](results/exports/experiment1_games.csv).
+
+**The average single-versus-joint comparison remains uncertain.** DeepSeek's mean S−J is 38.6, with a 99.6875% adjusted interval of [−47.8, 125.0]. Qwen has only one eligible game, so its Student-t interval is not estimable. [Primary estimates](results/exports/experiment1_primary.csv).
+
+**Removing retaliation raised prices in the selected calm-checkpoint pairs.** The mean effect was +0.0818 for DeepSeek (8/20 parents) and +0.0600 for Qwen (7/20). Both models completed all 20 parents. These effects do not establish learned deterrence or awareness of removal. The removal intervals use the planned four-model correction; the pricing-gain intervals retain the separate 16-comparison correction. [DeepSeek estimates](results/exports/experiment2_deepseek_summary.csv), [Qwen estimates](results/exports/experiment2_qwen_summary.csv).
 
 ![Per-game gains and paired retaliation-removal effects](figures/results_summary.png)
 
-Left: each line is one eligible game, not an independent observation per branch. Right: paired removal effects with 98.75% intervals, n=8 for DeepSeek and n=7 for Qwen.
+Left: each line connects matched conditions within one eligible game, not time points or independent observations. Three completed Qwen games were ineligible and have no intervention gains to plot. Right: paired removal effects with 98.75% intervals, n=8 for DeepSeek and n=7 for Qwen.
 
 The table and result figure are generated from the bundled [verified exports](results/README.md). Rebuild them without API calls:
 
@@ -68,7 +82,7 @@ Use a stable copy of the run folders. `run_saved_report.py` hashes inputs before
 
 ## Source and shared infrastructure
 
-Author: **Drishti Sharma — Independent**. This standalone repository was exported from the committed sprint source recorded in `provenance/source.json`. The two paper releases retain the same tested shared `sprint` engine and compatibility modules; only the paper-specific launch notebooks are exposed. Shared reporting imports and their regression fixtures retain compatibility modules for the original source tree; these are not additional studies claimed by this paper. No uncommitted launcher edits, API credentials, live outputs or internal manuscript drafts are included.
+Author: **Drishti Sharma, Independent**. This standalone repository was exported from the committed sprint source recorded in `provenance/source.json`. The two paper releases retain the same tested shared `sprint` engine and compatibility modules; only the paper-specific launch notebooks are exposed. Shared reporting imports and their regression fixtures retain compatibility modules for the original source tree; these are not additional studies claimed by this paper. No uncommitted launcher edits, API credentials, live outputs or internal manuscript drafts are included.
 
 `provenance/collection-*.tar.gz` preserves source/config snapshots at the original collection pins. Extract these separately when inspecting the original collection code; the submission tag identifies the later reporting release. Do not resume existing journals with changed collection settings.
 
