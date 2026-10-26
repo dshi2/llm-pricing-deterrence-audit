@@ -9,6 +9,8 @@ Two experiments with LLM pricing agents:
 
 ![Study design](figures/report1_pricing_design.png)
 
+**Figure 1.** *Design of the two experiments. In Experiment 1, three LLM sellers play 150 rounds. If seller A's 10% price cut would pay against rivals that don't react, the game restarts from that point in eight 20-round branches: A cuts or keeps its price while neither, one or both rivals respond. A rival that doesn't respond repeats its earlier prices. In Experiment 2, one LLM seller plays 100 rounds against a scripted rival that punishes undercutting. At calm points, the game restarts with the punishment kept or removed and the seller's memory kept or reset. Branches from the same game are compared with each other, not counted as independent samples.*
+
 ## Results
 
 <!-- RESULTS:START -->
@@ -23,6 +25,8 @@ Two experiments with LLM pricing agents:
 - Removing retaliation raised prices for both models. This does not show that the models learned deterrence or noticed the removal.
 
 ![Results](figures/results_summary.png)
+
+**Figure 2.** *Left: the gain from seller A's price cut in each of the five eligible games (four DeepSeek, one Qwen), by which rivals were allowed to respond. Lines join the conditions within one game, and points below zero mean the cut lost money. One responding rival was enough to make the cut unprofitable in four games; in DeepSeek game 4 the cut still paid when both rivals responded. Right: the rise in the seller's mean price when the rival's punishment was removed, with memory kept, shown with 98.75% intervals (8 DeepSeek and 7 Qwen paired games).*
 
 Per-game and summary numbers are in [results/exports](results/README.md). Rebuild the table and figure with `python -m scripts.build_readme_results` (no API calls).
 
