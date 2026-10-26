@@ -1,9 +1,0 @@
-# Design figure caption
-
-## Report 1 — Two pricing experiments
-
-File: `report1_pricing_design.png` (also PDF and SVG).
-
-**Suggested caption.** Experimental designs for rival responses and removal of retaliation. **Experiment 1 — Individual and joint deterrence:** Three LLM sellers interact for 150 rounds, followed by a 20-round reference. Among sellers meeting the prescribed-cut eligibility criterion, one seller A is selected. Eight branches restart from the parent checkpoint: four rival-response conditions, each with a cut and a matched no-cut path. Seller A follows its prescribed path; non-live rivals replay reference prices. A's price is reduced by 10% for the first ten of twenty branch rounds. A repeat of the both-rivals-live no-cut branch assesses repeatability. Within-game gains are G00, G10, G01 and G11; S=(G10+G01)/2, J=G11 and M=min(G10,G01). **Experiment 2 — Pricing after retaliation removal:** One LLM faces a scripted punisher for 100 rounds. At calm checkpoints, the rival's policy is retained or replaced by fixed pricing, crossed with retained or reset seller context. Four neutral-text branches form the core comparison; disclosure and A/A paths are additional diagnostics. A fresh fixed-rival baseline is collected for every completed parent. The primary Experiment 2 outcome is the paired removed-minus-retained mean-price difference with context kept. Branches share a parent and are not independent samples. The two experiments have separate estimands and samples.
-
-**Methods detail to retain in prose.** Eligibility requires positive reference profit and a positive unopposed prescribed-cut gain of at least 1% of reference profit. Experiment 2 reset keeps the last parent observation and round number but clears older context/notes; it does not reset the scripted rival. Arrows show study structure, not the randomized execution order of branches. Controls validate measurement; they are not evidence that live models must respond.

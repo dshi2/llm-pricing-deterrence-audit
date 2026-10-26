@@ -10,6 +10,8 @@
 - Renamed modules, scripts, configs and report commands to the experiment names used in the report (`deterrence`, `retaliation`). Run-folder names stored in the data are unchanged.
 - Shortened the README and the reproduction guide.
 
+- Matched the citation titles to the reports, set the minimum Python version to 3.12 removed figure-drafting notes and added the MIT License.
+
 No experiment settings, saved results, statistical definitions or submitted PDFs were changed.
 
 Previous repository state: `bc0a0ebbee814239888831e954300a54cff83c5f`, retained as `pre-maintenance-2026-10-26`.

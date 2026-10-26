@@ -4,6 +4,7 @@ rerun it to completion, and compare every game with an uninterrupted control run
     python scripts/kill_and_resume.py configs/deterrence_pilot_deepseek.toml /tmp/kill_check
 """
 
+import argparse
 import json
 import signal
 import subprocess
@@ -69,4 +70,8 @@ def main(config, base):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:3])
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("config", help="Experiment 1 config to run with stub sellers")
+    parser.add_argument("base", help="New, empty output folder")
+    args = parser.parse_args()
+    main(args.config, args.base)

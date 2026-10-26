@@ -1,5 +1,6 @@
 # Release validation
 
+- Fresh clone from GitHub, installed with the README steps (2026-10-26): 210 tests passed on Python 3.12 and 3.13; Ruff passed; every script's `--help` runs. Python 3.11 is not supported because the pinned NumPy needs 3.12.
 - After removing evidence-audit code and renaming modules (2026-10-26): 210 tests passed and Ruff passed in the original research environment (Python 3.13.3).
 
 Before that cleanup:
