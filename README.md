@@ -64,6 +64,18 @@ results/    Bundled numerical exports with hashes
 tests/      Tests
 ```
 
+## What is new and when it was done
+
+This project was carried out entirely within the Apart AI Collusion Research Sprint (23–26 October 2026). No code or data predates the sprint; the first commit is from 25 October 2026.
+
+It builds on the sprint starter kit ([poseidon-research/collusion_hackathon](https://github.com/poseidon-research/collusion_hackathon), commit `d585a7b`), which packages the pricing harness of Romero, Sauer and Peist:
+
+- **Used unchanged:** the market functions and prompt texts. They are downloaded at install time, not copied here.
+- **Adapted:** `sprint/prompt.py` rebuilds the starter's prompt construction and reuses its response-format text; a test checks that the output matches the starter exactly.
+- **New:** everything else, including the experiments, game engine, model client, analysis, controls and figures.
+
+The version submitted with the report is tagged [`pre-maintenance-2026-10-26`](https://github.com/dshi2/llm-pricing-deterrence-audit/tree/pre-maintenance-2026-10-26), committed on 26 October at 11:19 UTC, before the 11:59 UTC deadline. Later commits only tidy documentation and code layout; they add no experiments or results.
+
 ## Source
 
 Author: **Drishti Sharma, Independent**. Exported from the sprint source recorded in `provenance/source.json`. The companion paper's code is in [covert-channel-evidence-audit](https://github.com/dshi2/covert-channel-evidence-audit).
