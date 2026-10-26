@@ -1,4 +1,4 @@
-"""Offline intervention paths, parent profit benchmarks and F1 paired cells; no paid calls."""
+"""Offline intervention paths, parent profit benchmarks and retaliation-removal paired cells; no paid calls."""
 
 import argparse
 import hashlib
@@ -9,9 +9,9 @@ import numpy as np
 import pandas as pd
 
 from scripts.report_figures import groups, plt, save
-from sprint.covert_analyze import events
-from sprint.fallback1_analyze import tables
+from sprint.engine import events
 from sprint.market import Market
+from sprint.retaliation_analyze import tables
 
 
 def read_game(path):
@@ -102,13 +102,13 @@ def main_paths(head, branches, result, out, tag, label):
     return rows
 
 
-F1_PANELS = (("Context retained", ["kept_memory_neutral", "replaced_memory_neutral", "replaced_memory_truth",
+RETALIATION_PANELS = (("Context retained", ["kept_memory_neutral", "replaced_memory_neutral", "replaced_memory_truth",
                                     "kept_memory_neutral_repeat"]),
              ("Context reset", ["kept_reset_neutral", "replaced_reset_neutral", "replaced_reset_truth"]),
              ("Fresh fixed-rival baseline", ["fresh_fixed"]))
 
 
-def f1_levels(head):
+def retaliation_levels(head):
     """Reference prices: where restraint, punishment and full adjustment to the fixed rival would sit."""
     market, rules = Market(**head["market"]), head["rules"]
     return {"calm rival price": rules["calm"], "punishment trigger": rules["trigger"],
@@ -121,11 +121,11 @@ def reference_lines(ax, levels):
         ax.axhline(level, color="grey", ls=style, lw=.8, label=name)
 
 
-def f1_paths(head, branches, out, tag, label):
+def retaliation_paths(head, branches, out, tag, label):
     start = head["rules"]["parent_rounds"]
     fig, axes = plt.subplots(1, 3, figsize=(13, 4), sharey=True)
     rows = []
-    for ax, (title, names) in zip(axes, F1_PANELS):
+    for ax, (title, names) in zip(axes, RETALIATION_PANELS):
         for name in names:
             points = sorted(branches.get(name, {}).items())
             offset = 0 if name == "fresh_fixed" else start
@@ -134,24 +134,24 @@ def f1_paths(head, branches, out, tag, label):
             ax.plot(rounds, [row["prices"][0] for _, row in points], label=name.replace("_", " "), lw=1.4)
             rows.extend({"branch": name, "round": r, "price": row["prices"][0], "complete": complete}
                         for r, (_, row) in zip(rounds, points))
-        reference_lines(ax, f1_levels(head))
+        reference_lines(ax, retaliation_levels(head))
         ax.set(title=title, xlabel="Continuation round", ylabel="Seller A normalised price")
         ax.legend(fontsize=6)
-    fig.suptitle(f"{label}\nF1 seed {head['game_seed']}; partial paths remain visible")
-    save(fig, out, f"f1_paths_{tag}")
+    fig.suptitle(f"{label}\nRetaliation-removal seed {head['game_seed']}; partial paths remain visible")
+    save(fig, out, f"retaliation_paths_{tag}")
     return rows
 
 
-def f1_mean_paths(prices, levels, out, label):
+def retaliation_mean_paths(prices, levels, out, label):
     """Mean continuation path per arm over complete paths (all `horizon` rounds), one thin line per
     parent: the treatment time series used in punishment and post-cartel experiments. Interrupted paths
-    are left out here, and a model with none complete gets no figure; f1_paths shows them."""
+    are left out here, and a model with none complete gets no figure; retaliation_paths shows them."""
     if prices.empty or not prices["complete"].any():
         return
     colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
     for tag, identity, group in groups(prices[prices["complete"]]):
         fig, axes = plt.subplots(1, 3, figsize=(13, 4), sharey=True)
-        for ax, (title, names) in zip(axes, F1_PANELS):
+        for ax, (title, names) in zip(axes, RETALIATION_PANELS):
             for name, color in zip(names, colors):
                 wide = group[group.branch == name].pivot(index="round", columns="seed", values="price")
                 if wide.empty:
@@ -163,10 +163,10 @@ def f1_mean_paths(prices, levels, out, label):
             ax.set(title=title, xlabel="Continuation round", ylabel="Seller A normalised price")
             ax.legend(fontsize=6)
         fig.suptitle(f"{label}\n{identity['model']} — mean of complete paths (bold); one thin line per parent")
-        save(fig, out, f"f1_mean_paths_{tag}")
+        save(fig, out, f"retaliation_mean_paths_{tag}")
 
 
-def f1_cells(paths, out, label):
+def retaliation_cells(paths, out, label):
     if paths.empty or "mean_price" not in paths:
         return
     cells = [f"{rival}_{context}_neutral" for context in ("memory", "reset") for rival in ("kept", "replaced")]
@@ -183,7 +183,7 @@ def f1_cells(paths, out, label):
             ax.set_xticks([0, 1], ["Punisher retained", "Punisher removed"])
             ax.set(title=f"Context {context}; n={len(wide)} complete parents", ylabel="Mean normalised price")
         fig.suptitle(f"{label}\n{identity['model']} — four matched neutral cells")
-        save(fig, out, f"f1_cells_{tag}")
+        save(fig, out, f"retaliation_cells_{tag}")
 
 
 def export(kind, run_dirs, out, label):
@@ -195,7 +195,7 @@ def export(kind, run_dirs, out, label):
             if path.name.endswith(".calls.jsonl"):
                 continue
             head, branches, status, result = read_game(path)
-            expected = "main" if kind == "main" else "replacement"
+            expected = "main" if kind == "deterrence" else "replacement"
             if head.get("experiment") != expected:
                 raise ValueError(f"Expected {expected} journal: {path}")
             setup = {key: head[key] for key in ("experiment", "market", "rules", "model", "code_sha")}
@@ -206,16 +206,16 @@ def export(kind, run_dirs, out, label):
             digest = hashlib.sha256(path.read_bytes()).hexdigest()
             tag = hashlib.sha256(str(path.resolve()).encode()).hexdigest()[:12]
             sources.append({"path": str(path.resolve()), "sha256": digest})
-            if kind == "main":
+            if kind == "deterrence":
                 profits.extend(common | row for row in late_profit_gain(head, branches))
                 data = main_paths(head, branches, result, out, tag, label + " — " + common["model"])
             else:
-                data = f1_paths(head, branches, out, tag, label + " — " + common["model"])
-                levels[common["setup"]] = f1_levels(head)
+                data = retaliation_paths(head, branches, out, tag, label + " — " + common["model"])
+                levels[common["setup"]] = retaliation_levels(head)
                 opportunities.extend(common | row for row in removal_opportunity(head, branches))
             prices.extend(common | row for row in data)
     pd.DataFrame(prices).to_csv(out / "price_paths.csv", index=False)
-    if kind == "main":
+    if kind == "deterrence":
         frame = pd.DataFrame(profits)
         frame.to_csv(out / "late_profit_gain.csv", index=False)
         if not frame.empty and "series" in frame:
@@ -227,18 +227,18 @@ def export(kind, run_dirs, out, label):
                 ax.set(title=f"{label}\n{identity['model']} — complete parent windows 100–150",
                        xlabel="Game seed (one point per game)", ylabel="Normalised profit gain Δ")
                 ax.legend()
-                save(fig, out, f"main_profit_gain_{tag}")
+                save(fig, out, f"deterrence_profit_gain_{tag}")
     else:
         pd.DataFrame(opportunities).to_csv(out / "observation_opportunity.csv", index=False)
-        f1_mean_paths(pd.DataFrame(prices), levels, out, label)
+        retaliation_mean_paths(pd.DataFrame(prices), levels, out, label)
         _, paths, _ = tables(run_dirs)
-        f1_cells(paths, out, label)
+        retaliation_cells(paths, out, label)
     (out / "sources.json").write_text(json.dumps({"sources": sources, "label": label}, indent=2) + "\n")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("kind", choices=("main", "f1"))
+    parser.add_argument("kind", choices=("deterrence", "retaliation"))
     parser.add_argument("runs", type=Path, nargs="+")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--label", default="Descriptive results")

@@ -1,16 +1,16 @@
-name = "fallback1_canary_deepseek41"
+name = "retaliation_canary_gptoss120"
 experiment = "replacement"
 seeds = [99]
 concurrency = 1
 
 [model]
-model = "deepseek/deepseek-v4.1-flash-1017"
+model = "openai/gpt-oss-120b"
 provider = "DeepInfra"
-provider_route = "deepinfra/fp8"
-quantization = "fp8"
+provider_route = "deepinfra/bf16"
+quantization = "bf16"
+reasoning_effort = "high"  # same label as DeepSeek
 temperature = 0.7
-max_tokens = 8192  # reasoning plus final JSON; canary checks truncation
-reasoning_effort = "high"
+max_tokens = 8192  # reasoning and final reply share this allowance
 prefix = "P1"
 units = "consistent"  # cost and profit in the price currency (see sprint/prompt.py)
 

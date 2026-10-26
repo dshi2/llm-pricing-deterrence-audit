@@ -3,9 +3,9 @@ from types import SimpleNamespace
 
 import pytest
 
-from scripts.check_fallback1_controls import CONTROLS, control_policy, run_controls
-from sprint.fallback1 import ReplacementRules
-from sprint.fallback1_run import load_config
+from scripts.check_retaliation_controls import CONTROLS, control_policy, run_controls
+from sprint.retaliation import ReplacementRules
+from sprint.retaliation_run import load_config
 from sprint.run import load_config as main_config
 
 
@@ -31,18 +31,18 @@ def test_policy_observes_history_not_treatment_labels(kind):
     assert left == right
 
 
-def test_fallback_deepseek_endpoint_matches_main_without_changing_design():
-    main = main_config('configs/main_pilot_deepseek41.toml')
+def test_retaliation_deepseek_endpoint_matches_main_without_changing_design():
+    main = main_config('configs/deterrence_pilot_deepseek41.toml')
     for stage in ('pilot', 'canary'):
-        old = load_config(f'configs/fallback1_{stage}_deepseek31.toml')
-        new = load_config(f'configs/fallback1_{stage}_deepseek41.toml')
+        old = load_config(f'configs/retaliation_{stage}_deepseek31.toml')
+        new = load_config(f'configs/retaliation_{stage}_deepseek41.toml')
         assert new['model'] == main['model'] and new['rules'] == old['rules']
-    canary = [load_config(f'configs/fallback1_canary_{m}.toml') for m in ('deepseek31', 'deepseek41')]
+    canary = [load_config(f'configs/retaliation_canary_{m}.toml') for m in ('deepseek31', 'deepseek41')]
     assert canary[0]['seeds'] == canary[1]['seeds'] and canary[0]['concurrency'] == canary[1]['concurrency']
 
 
 def test_selected_f1_pilots_share_one_design():
-    pilots = [load_config(f'configs/fallback1_pilot_{m}.toml') for m in ('deepseek41', 'qwen38', 'mistral3', 'gptoss120')]
+    pilots = [load_config(f'configs/retaliation_pilot_{m}.toml') for m in ('deepseek41', 'qwen38', 'mistral3', 'gptoss120')]
     for config in pilots:
         assert config['seeds'] == list(range(1, 21)) and config['concurrency'] == 10
         assert config['rules'] == pilots[0]['rules']

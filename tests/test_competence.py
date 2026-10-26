@@ -83,7 +83,7 @@ def test_diagnostics_keep_wrong_answers_resume_and_start_pricing_with_empty_hist
 
 @pytest.mark.parametrize("family", ["deepseek", "deepseek31", "qwen38", "mistral3", "gptoss120"])
 def test_canary_and_pilot_share_model_settings(family):
-    pilot = load_config(f"configs/main_pilot_{family}.toml")
+    pilot = load_config(f"configs/deterrence_pilot_{family}.toml")
     canary = load_config(f"configs/canary_{family}.toml")
     assert pilot["model"] == canary["model"]
     assert pilot["rules"] == MainRules()

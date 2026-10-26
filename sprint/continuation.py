@@ -67,7 +67,7 @@ def pilot_status(root, families, config_root=Path("configs"), now=None):
     states = {}
     for f in families:
         try:
-            states[f] = family_state(root, f, load_config(Path(config_root) / f"main_pilot_{f}.toml"))
+            states[f] = family_state(root, f, load_config(Path(config_root) / f"deterrence_pilot_{f}.toml"))
         except ValueError:  # a journal caught mid-write or mid-sync; look again next poll
             states[f] = "unfinished"
     touched = max((p.stat().st_mtime for p in root.rglob("*") if p.is_file()), default=now)
@@ -130,7 +130,7 @@ def prepare(root, families, remaining_usd, cutoff, config_root=Path("configs"), 
     """Freeze N per model, configs and attempt caps once, before any continuation call; resume reuses them."""
     root, config_root = Path(root), Path(config_root)
     manifest = root / "continue_plan.json"
-    pilots = {f: load_config(config_root / f"main_pilot_{f}.toml") for f in families}
+    pilots = {f: load_config(config_root / f"deterrence_pilot_{f}.toml") for f in families}
     if manifest.exists():
         saved = json.loads(manifest.read_text())
         if saved["collection_code_sha"] != code_sha():

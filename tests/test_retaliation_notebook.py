@@ -10,10 +10,10 @@ from test_client import CONFIG, FakeClient, ok
 
 from sprint.client import Budget, LLMPolicy
 from sprint.engine import Journal
-from sprint.fallback1 import ReplacementRules, replacement_game
-from sprint.fallback1_analyze import launch_checks
-from sprint.fallback1_run import full_context_request, header
 from sprint.market import Market
+from sprint.retaliation import ReplacementRules, replacement_game
+from sprint.retaliation_analyze import launch_checks
+from sprint.retaliation_run import full_context_request, header
 
 NOTEBOOK = Path('notebooks/retaliation_removal.ipynb')
 

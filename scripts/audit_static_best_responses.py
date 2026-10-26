@@ -1,4 +1,4 @@
-"""Descriptive, hindsight static best responses to recorded F1 rival prices.
+"""Descriptive, hindsight static best responses to recorded Experiment 2 rival prices.
 
 This is not a feasible-information policy or a dynamic optimum, and agreement with it does not
 identify the seller's decision rule. No API calls.
@@ -28,7 +28,7 @@ def audit(inputs, out):
         events = [json.loads(line) for line in raw.splitlines()]
         head = events[0]
         if head["experiment"] != "replacement" or head["market"]["n"] != 2:
-            raise ValueError("Expected two-seller F1 journals")
+            raise ValueError("Expected two-seller Experiment 2 journals")
         market, rules = Market(**head["market"]), head["rules"]
         best_response = lru_cache(None)(lambda rival, m=market: m.best_response(0, (m.cost, rival)))
         branches = {}
@@ -69,7 +69,7 @@ def audit(inputs, out):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("inputs", type=Path, help="F1 model run folder with game_*.jsonl journals")
+    parser.add_argument("inputs", type=Path, help="Experiment 2 model run folder with game_*.jsonl journals")
     parser.add_argument("--out", required=True, type=Path, help="New output folder; never overwrites")
     args = parser.parse_args()
     audit(args.inputs, args.out)

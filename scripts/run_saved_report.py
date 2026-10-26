@@ -38,25 +38,23 @@ def environment(root):
 
 def run_report(kind, runs, out, stage="pilot", label="Descriptive snapshot", planned_seeds=None):
     from scripts import plot_paths, report_figures
-    from sprint import covert_analyze, fallback1_analyze, study
+    from sprint import retaliation_analyze, study
 
     runs = [Path(p).resolve() for p in runs]
     out = Path(out).resolve()
     if len({p.name for p in runs}) != len(runs):
-        raise ValueError("Run folder names must be unique; Main analysis identifies runs by folder name")
+        raise ValueError("Run folder names must be unique; analysis identifies runs by folder name")
     for directory in runs:
         if not directory.is_dir():
             raise ValueError(f"Missing run folder: {directory}")
         if out == directory or out.is_relative_to(directory) or directory.is_relative_to(out):
             raise ValueError("Report output must be separate from input run folders")
-        if kind == "f2" and not (directory / "manifest.json").is_file():
-            raise ValueError(f"F2 manifest missing: {directory}")
-        if kind != "f2" and not any(
+        if not any(
                 not p.name.endswith(".calls.jsonl") for p in directory.glob("game_*.jsonl")):
             raise ValueError(f"No game journals: {directory}")
     out.mkdir(parents=True, exist_ok=False)
     before = hashes(runs)
-    manifest = {"experiment": kind, "stage": stage if kind == "main" else None,
+    manifest = {"experiment": kind, "stage": stage if kind == "deterrence" else None,
                 "label": label, "planned_seeds": planned_seeds,
                 "created_utc": datetime.now(UTC).isoformat(),
                 "inputs": before, "status": "started"}
@@ -71,18 +69,12 @@ def run_report(kind, runs, out, stage="pilot", label="Descriptive snapshot", pla
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
     tables, figures = out / "tables", out / "figures"
     try:
-        if kind == "main":
+        if kind == "deterrence":
             study.export(runs, tables, stage, planned_seeds=planned_seeds)
-        elif kind == "f1":
-            fallback1_analyze.export_tables(runs, tables)
         else:
-            covert_analyze.export_tables(runs, tables)
+            retaliation_analyze.export_tables(runs, tables)
         report_figures.run(kind, tables, figures, label)
-        if kind in ("main", "f1"):
-            plot_paths.export(kind, runs, figures / "paths", label)
-        else:
-            from scripts.plot_f2_metrics import plot_metrics
-            plot_metrics(tables / "summary.csv", figures / "metrics", label)
+        plot_paths.export(kind, runs, figures / "paths", label)
         if hashes(runs) != before:
             raise RuntimeError("Input files changed during analysis. Use a stable snapshot and rerun to a new output folder")
         manifest["status"] = "complete"
@@ -98,15 +90,15 @@ def run_report(kind, runs, out, stage="pilot", label="Descriptive snapshot", pla
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("kind", choices=("main", "f1", "f2"))
+    parser.add_argument("kind", choices=("deterrence", "retaliation"))
     parser.add_argument("runs", nargs="+", type=Path, help="Model run folders, not the parent directory")
     parser.add_argument("--out", required=True, type=Path, help="New report folder; never overwrites")
     parser.add_argument("--stage", choices=("pilot", "pooled", "expansion"), default="pilot")
-    parser.add_argument("--planned-seeds", nargs="+", type=int, help="Main accounting only; use actual saved plan")
+    parser.add_argument("--planned-seeds", nargs="+", type=int, help="Experiment 1 accounting only; use actual saved plan")
     parser.add_argument("--label", default="Descriptive snapshot")
     args = parser.parse_args()
-    if args.planned_seeds and args.kind != "main":
-        parser.error("--planned-seeds applies only to Main")
+    if args.planned_seeds and args.kind != "deterrence":
+        parser.error("--planned-seeds applies only to Experiment 1")
     print(run_report(args.kind, args.runs, args.out, args.stage, args.label, args.planned_seeds))
 
 

@@ -1,4 +1,4 @@
-"""Descriptive paired estimates for fallback 1. Families, configurations and run directories stay apart."""
+"""Descriptive paired estimates for the retaliation-removal experiment. Families, configurations and run directories stay apart."""
 
 import hashlib
 import json
@@ -11,8 +11,8 @@ from scipy.stats import t
 from sprint.analyze import _call_stats
 from sprint.analyze import launch_checks as shared_launch_checks
 from sprint.engine import Round
-from sprint.fallback1 import CELLS, ReplacementRules, checkpoint, dynamic_benchmark, score_path
 from sprint.market import Market
+from sprint.retaliation import CELLS, ReplacementRules, checkpoint, dynamic_benchmark, score_path
 
 # All differences are first minus second; pair within the same parent, never across games.
 CONTRASTS = {
@@ -48,7 +48,7 @@ def tables(run_dirs):
                     # Report the last complete prefix without mutating a live journal.
             head = events[0]
             if head["experiment"] != "replacement":
-                raise ValueError("fallback analysis received a different experiment")
+                raise ValueError("retaliation analysis received a different experiment")
             market, rules = Market(**head["market"]), ReplacementRules(**head["rules"])
             setup = {k: head[k] for k in ("experiment", "model", "market", "rules", "code_sha")}
             key = {"run": str(directory.resolve()), "setup": hashlib.sha256(
@@ -99,7 +99,7 @@ def tables(run_dirs):
 
 
 # Primary D: removal effect on mean price with context kept, over all calm checkpoints. Fixed before any
-# F1 data: Bonferroni over the four models; fewer than ten pairs keeps the exploratory label.
+# Experiment 2: Bonferroni over the four models; fewer than ten pairs keeps the exploratory label.
 PRIMARY, PRIMARY_MODELS, MIN_PAIRS = ("replacement_memory", "mean_price"), 4, 10
 
 

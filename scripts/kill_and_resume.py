@@ -1,7 +1,7 @@
 """Offline evidence that a killed run resumes exactly: SIGKILL a --stub batch several times mid-game,
 rerun it to completion, and compare every game with an uninterrupted control run.
 
-    python scripts/kill_and_resume.py configs/main_pilot_deepseek.toml /tmp/kill_check
+    python scripts/kill_and_resume.py configs/deterrence_pilot_deepseek.toml /tmp/kill_check
 """
 
 import json

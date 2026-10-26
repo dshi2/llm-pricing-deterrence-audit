@@ -8,9 +8,9 @@ from pathlib import Path
 
 from sprint.client import Budget
 from sprint.engine import Decision
-from sprint.fallback1 import ReplacementRules
-from sprint.fallback1_analyze import tables
-from sprint.fallback1_run import load_config, run_batch
+from sprint.retaliation import ReplacementRules
+from sprint.retaliation_analyze import tables
+from sprint.retaliation_run import load_config, run_batch
 
 CONTROLS = ("constant", "price_responsive", "reset_sensitive")
 
@@ -63,7 +63,7 @@ def independent_paths(kind, removed, reset, horizon=20):
 def run_controls(out):
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
-    config = load_config("configs/fallback1_pilot_deepseek41.toml")
+    config = load_config("configs/retaliation_pilot_deepseek41.toml")
     config |= {"rules": ReplacementRules(), "seeds": [1], "concurrency": 1}
     records = []
     for kind in CONTROLS:

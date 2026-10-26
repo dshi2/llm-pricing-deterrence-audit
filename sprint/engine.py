@@ -98,6 +98,16 @@ def make_request(rows: Sequence[Round], seller: int, seed: int, view: View, wind
                    notes.plans if notes else None, notes.insights if notes else None, view.notice)
 
 
+def events(path):
+    """Read an interrupted journal without mistaking its unfinished final line for a result."""
+    if not path.exists():
+        return []
+    lines = path.read_text().splitlines(keepends=True)
+    if lines and not lines[-1].endswith("\n"):
+        lines.pop()
+    return [json.loads(line) for line in lines]
+
+
 class Journal:
     """Append-only JSONL record of one game. Reopening it with the same header resumes the game."""
 

@@ -2,8 +2,8 @@
 
     python -m sprint.run configs/canary_deepseek.toml --budget 200 --dry-run
     python -m sprint.run configs/canary_deepseek.toml --budget 200
-    python -m sprint.run configs/main_pilot_deepseek.toml --budget 10 --context-probe
-    python -m sprint.run configs/main_pilot_deepseek.toml --stub   (offline, no API calls)
+    python -m sprint.run configs/deterrence_pilot_deepseek.toml --budget 10 --context-probe
+    python -m sprint.run configs/deterrence_pilot_deepseek.toml --stub   (offline, no API calls)
 
 The budget caps API attempts (retries included) for the run directory in total: attempts already in
 its call logs count, so rerunning never grants a fresh allowance. Never run one directory from two

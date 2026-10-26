@@ -85,9 +85,9 @@ def pooled_report(seeds, stage, analysis, figures, label):
     """The full run's tables and figures. Also rehearsed on the pilot alone, right after N is frozen."""
     run_dirs = [OUT / f'main_{family}' for family in FAMILIES]
     table, primary = export(run_dirs, analysis, stage, seeds)
-    report_figures.run('main', analysis, figures, label)
+    report_figures.run('deterrence', analysis, figures, label)
     report_figures.run('diagrams', None, figures)
-    export_paths('main', [d for d in run_dirs if d.exists()], figures, label)
+    export_paths('deterrence', [d for d in run_dirs if d.exists()], figures, label)
     return table, primary
 
 
@@ -105,9 +105,9 @@ for family, entry in PLAN['families'].items():
 print('Projected new cost, not guaranteed: $%.2f' % PLAN['projected_new_cost_usd_not_guaranteed'])
 if fresh:  # N is frozen and nothing is writing yet: rehearse the full-run report on the real pilot data
     try:
-        pilot_seeds = {f'main_{f}': load_config(Path('configs') / f'main_pilot_{f}.toml')['seeds'] for f in FAMILIES}
+        pilot_seeds = {f'main_{f}': load_config(Path('configs') / f'deterrence_pilot_{f}.toml')['seeds'] for f in FAMILIES}
         _, rehearsal = pooled_report(pilot_seeds, 'pilot', OUT / 'analysis_pilot_rehearsal',
-                                     OUT / 'figures_pilot_rehearsal', 'Main study: pilot only (report rehearsal)')
+                                     OUT / 'figures_pilot_rehearsal', 'Experiment 1: pilot only (report rehearsal)')
         display(rehearsal)
     except Exception as error:  # noqa: BLE001 -- figures never block collection; the report rebuilds offline
         print(f'Report rehearsal failed: {error!r}. Collection goes ahead; fix the report offline.')

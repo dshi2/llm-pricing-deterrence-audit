@@ -146,7 +146,7 @@ async def replacement_game(policy: Policy, game_seed: int, journal: Journal,
                            market=None, rules=None, label="") -> dict:
     market, rules = market or Market(2), rules or ReplacementRules()
     if market.n != 2:
-        raise ValueError("fallback 1 requires two sellers")
+        raise ValueError("retaliation removal requires two sellers")
     if journal.result is not None:
         return journal.result
     if journal.failure is not None:

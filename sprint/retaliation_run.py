@@ -11,15 +11,15 @@ from pathlib import Path
 
 from sprint.client import Budget, Fatal, Interrupted, LLMPolicy, ModelConfig, Unusable
 from sprint.engine import Journal
-from sprint.fallback1 import ReplacementRules, notices, replacement_game
 from sprint.market import Market
+from sprint.retaliation import ReplacementRules, notices, replacement_game
 from sprint.run import attempts_logged, code_sha, probe_request, provenance
 from sprint.scripted import demo_policy
 
 
-def fallback_sha():
+def retaliation_sha():
     h = hashlib.sha256(code_sha().encode())
-    for name in ("fallback1.py", "fallback1_run.py"):
+    for name in ("retaliation.py", "retaliation_run.py"):
         h.update(Path(__file__).with_name(name).read_bytes())
     return h.hexdigest()
 
@@ -42,7 +42,7 @@ def load_config(path):
 def header(config, seed, stub):
     return {"experiment": "replacement", "game_seed": seed, "rules": asdict(config["rules"]),
             "market": asdict(Market(2)), "model": "stub" if stub else asdict(config["model"]),
-            "code_sha": fallback_sha()}
+            "code_sha": retaliation_sha()}
 
 
 async def run_batch(config, out, budget, stub=False, policy_factory=None):
@@ -121,12 +121,12 @@ def main(argv=None):
         print(asyncio.run(context_probe(config, out, budget)))
         return
     results = asyncio.run(run_batch(config, out, budget, args.stub))
-    record = provenance(" ".join(sys.argv)) | {"fallback_sha": fallback_sha(), "attempts_used": budget.used,
+    record = provenance(" ".join(sys.argv)) | {"retaliation_sha": retaliation_sha(), "attempts_used": budget.used,
                                                "games": [{"seed": r["game_seed"], "status": r["status"]}
                                                          for r in results]}
     with (out / "runs.jsonl").open("a") as f:
         f.write(json.dumps(record) + "\n")
-    from sprint.fallback1_analyze import export_tables
+    from sprint.retaliation_analyze import export_tables
     export_tables([out], out)
     for result in results:
         print(f"game {result['game_seed']}: {result['status']}", flush=True)

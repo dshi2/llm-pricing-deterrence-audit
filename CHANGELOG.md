@@ -6,6 +6,10 @@
 - Identified the generator for the combined results figure separately from supplementary diagnostic panels.
 - Clarified bundled-export reproduction versus raw-journal analysis and new paid collection.
 
+- Removed the evidence-audit study code, which lives in its own repository, and an unused review notebook.
+- Renamed modules, scripts, configs and report commands to the experiment names used in the report (`deterrence`, `retaliation`). Run-folder names stored in the data are unchanged.
+- Shortened the README and the reproduction guide.
+
 No experiment settings, saved results, statistical definitions or submitted PDFs were changed.
 
 Previous repository state: `bc0a0ebbee814239888831e954300a54cff83c5f`, retained as `pre-maintenance-2026-10-26`.

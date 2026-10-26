@@ -14,7 +14,8 @@ from scipy import stats
 
 from sprint.client import Budget, Declined, Fatal, Interrupted
 from sprint.engine import Decision, Journal
-from sprint.fallback1 import (
+from sprint.market import Market
+from sprint.retaliation import (
     CELLS,
     ReplacementRules,
     dynamic_benchmark,
@@ -23,9 +24,8 @@ from sprint.fallback1 import (
     replacement_game,
     state_after,
 )
-from sprint.fallback1_analyze import summary, tables
-from sprint.fallback1_run import full_context_request, load_config, run_batch
-from sprint.market import Market
+from sprint.retaliation_analyze import summary, tables
+from sprint.retaliation_run import full_context_request, load_config, run_batch
 from sprint.scripted import as_policy, fixed, punisher
 
 RULES = ReplacementRules(parent_rounds=6, horizon=3, restraint_window=4)
@@ -170,7 +170,7 @@ def test_resume_no_repeated_successful_decisions(tmp_path, stop):
 
 
 def test_runner_analysis_failures_and_pairing(tmp_path):
-    config = load_config('configs/fallback1_pilot_deepseek31.toml')
+    config = load_config('configs/retaliation_pilot_deepseek31.toml')
     config |= {'rules': RULES, 'seeds': [1,2,3], 'concurrency': 1}
     def factory(seed):
         async def policy(req, label):
@@ -189,7 +189,7 @@ def test_runner_analysis_failures_and_pairing(tmp_path):
 
 
 def test_fatal_logged_and_not_silently_counted(tmp_path):
-    config = load_config('configs/fallback1_pilot_deepseek31.toml')
+    config = load_config('configs/retaliation_pilot_deepseek31.toml')
     config |= {'rules': RULES, 'seeds': [1]}
     async def fatal(req, label): raise Fatal('wrong provider')
     with pytest.raises(Fatal):
@@ -238,7 +238,7 @@ def test_resume_finished_game_does_not_call_policy(tmp_path):
 
 
 def test_removal_context_interaction_is_paired_and_requires_all_four_cells(tmp_path):
-    config = load_config('configs/fallback1_pilot_deepseek31.toml')
+    config = load_config('configs/retaliation_pilot_deepseek31.toml')
     config |= {'rules': RULES, 'seeds': [1, 2], 'concurrency': 1}
     prices = {'replaced_reset_neutral': 1.50, 'kept_reset_neutral': 1.70,
               'replaced_memory_neutral': 1.65, 'kept_memory_neutral': 1.75}

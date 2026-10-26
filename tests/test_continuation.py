@@ -46,14 +46,14 @@ def finished_pilot(tmp_path):
     configs = tmp_path / "configs"
     configs.mkdir()
     pilot = {"name": f"main_{FAMILY}", "rules": CANARY, "model": CONFIG}
-    (configs / f"main_pilot_{FAMILY}.toml").write_text(config_text(pilot, [9], 4))
+    (configs / f"deterrence_pilot_{FAMILY}.toml").write_text(config_text(pilot, [9], 4))
     age(root, 60)
     return root, configs
 
 
 @pytest.mark.parametrize("family", FAMILIES)
 def test_continuation_is_the_pilot_protocol_in_the_same_folder(tmp_path, family):
-    pilot = load_config(f"configs/main_pilot_{family}.toml")
+    pilot = load_config(f"configs/deterrence_pilot_{family}.toml")
     path = tmp_path / "continue.toml"
     path.write_text(config_text(pilot, list(range(1, 13))))
     more = load_config(path)
@@ -122,7 +122,7 @@ def test_failed_pilot_game_or_changed_protocol_is_not_continued(tmp_path):
     entry = prepare(root, [FAMILY], 50, cutoff(10), configs)["families"][FAMILY]
     assert entry["status"] == "excluded: failed pilot game"
     root, configs = finished_pilot(tmp_path / "changed")
-    path = configs / f"main_pilot_{FAMILY}.toml"
+    path = configs / f"deterrence_pilot_{FAMILY}.toml"
     path.write_text(re.sub(r"(?m)^temperature = .*$", "temperature = 0.123", path.read_text()))
     with pytest.raises(ValueError, match="not the same protocol"):
         prepare(root, [FAMILY], 50, cutoff(10), configs)
@@ -156,7 +156,7 @@ def test_game_time_is_a_full_eligible_game_at_the_slowest_pilot_pace(tmp_path):
     assert events[-1]["result"]["status"] == "eligible"
     assert reply_rounds(rules) == len({(e["branch"], e["round"]) for e in events if e["event"] == "decision"}) == 310
     root, configs = finished_pilot(tmp_path / "pilot")  # a short pilot game is scaled up, never taken as is
-    pilot = load_config(configs / f"main_pilot_{FAMILY}.toml")
+    pilot = load_config(configs / f"deterrence_pilot_{FAMILY}.toml")
     played = {(e["branch"], e["round"]) for e in map(json.loads, (root / f"main_{FAMILY}/game_9.jsonl").read_text().splitlines())
               if e["event"] == "decision"}
     m = measure(root, pilot)
@@ -216,7 +216,7 @@ def test_freeze_launch_report_and_resume_run_end_to_end(tmp_path, monkeypatch):
     root, _ = finished_pilot(tmp_path)
     freeze, launch, report = notebook_cells()[5:]
     report = report.replace("from IPython.display import Image\n", "Image = dict\n")  # Colab-only import
-    monkeypatch.chdir(tmp_path)  # prepare reads configs/main_pilot_*.toml from here
+    monkeypatch.chdir(tmp_path)  # prepare reads configs/deterrence_pilot_*.toml from here
     calls, snapshots = [], []
 
     def run(args, **kwargs):  # the first pass exits normally with nothing done; the resume finishes
@@ -232,7 +232,7 @@ def test_freeze_launch_report_and_resume_run_end_to_end(tmp_path, monkeypatch):
     exec(freeze, scope)
     rehearsal = pd.read_csv(root / "analysis_pilot_rehearsal/games.csv")
     assert list(rehearsal.seed) == [9]  # the full-run report, rehearsed on the real pilot before any new game
-    assert list((root / "figures_pilot_rehearsal").glob("main_primary_*.png"))
+    assert list((root / "figures_pilot_rehearsal").glob("deterrence_primary_*.png"))
     exec(launch, scope)
     assert "Rerun to resume" in scope["failures"][FAMILY]  # a normal exit is not completion
     with pytest.raises(RuntimeError, match="Some families stopped"):
@@ -251,5 +251,5 @@ def test_freeze_launch_report_and_resume_run_end_to_end(tmp_path, monkeypatch):
     assert len(scope["table"]) == len(scope["PLAN"]["families"][FAMILY]["seeds"])
     assert set(scope["table"].status) <= {"eligible", "ineligible"}
     assert (root / "analysis_pooled/analysis.json").exists()
-    assert list((root / "figures_pooled").glob("design_main.png"))
+    assert list((root / "figures_pooled").glob("design_deterrence.png"))
     assert asdict(load_config(root / f"configs/main_continue_{FAMILY}.toml")["model"]) == asdict(CONFIG)

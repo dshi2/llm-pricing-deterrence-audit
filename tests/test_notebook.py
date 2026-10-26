@@ -66,7 +66,7 @@ def test_endpoint_snapshot_preserves_anchor_and_rejects_drift(tmp_path):
         "OUT": tmp_path, "urllib": SimpleNamespace(request=SimpleNamespace(urlopen=urlopen)),
         "json": json, "datetime": datetime, "UTC": UTC,
     })
-    config = load_config("configs/main_pilot_gptoss120.toml")
+    config = load_config("configs/deterrence_pilot_gptoss120.toml")
     snapshot(config)
     anchor = (tmp_path / "main_gptoss120.endpoint.json").read_text()
     endpoint["supported_parameters"].reverse()

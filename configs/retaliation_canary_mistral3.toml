@@ -1,4 +1,4 @@
-name = "fallback1_canary_mistral3"
+name = "retaliation_canary_mistral3"
 experiment = "replacement"
 seeds = [99]
 concurrency = 1

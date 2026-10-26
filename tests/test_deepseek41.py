@@ -11,7 +11,7 @@ from sprint.run import load_config
 
 
 def test_new_family_preserves_experiment_and_canary_settings():
-    for kind in ("main_pilot", "canary"):
+    for kind in ("deterrence_pilot", "canary"):
         old = load_config(f"configs/{kind}_deepseek31.toml")
         new = load_config(f"configs/{kind}_deepseek41.toml")
         for key in ("experiment", "seeds", "concurrency", "rules"):
@@ -24,7 +24,7 @@ def test_new_family_preserves_experiment_and_canary_settings():
 
 
 def test_new_family_request_is_pinned_and_explicit(tmp_path):
-    config = load_config("configs/main_pilot_deepseek41.toml")["model"]
+    config = load_config("configs/deterrence_pilot_deepseek41.toml")["model"]
     client = FakeClient([ok()])
     call(LLMPolicy(config, Market(3), Budget(1), tmp_path / "calls.jsonl", client=client))
     request = client.sent[0]

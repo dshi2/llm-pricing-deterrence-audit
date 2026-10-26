@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from sprint.covert_analyze import events
+from sprint.engine import events
 
 ORIGINAL, REPEAT = "11:no_cut", "11:no_cut:repeat"
 
