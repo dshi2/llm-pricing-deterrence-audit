@@ -19,7 +19,7 @@ The complete raw run archive is not bundled. See [data availability](../results/
 
 ## Supporting protocols and controls
 
-These retain collection-era settings and planning language; the PDF is the final report.
+These were written before data collection, so some settings and plans in them differ from what the final report describes.
 
 - [Retaliation-removal protocol](retaliation_removal_protocol.md)
 - [Retaliation-removal scripted controls](retaliation_removal_controls.csv)

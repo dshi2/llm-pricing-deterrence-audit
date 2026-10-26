@@ -25,7 +25,7 @@ def build():
     effects = effects[(effects.contrast == 'replacement_memory') &
                       (effects.outcome == 'mean_price') &
                       (effects.subgroup == 'all_calm_checkpoints')]
-    rows = ['| Model | Eligible pricing games / completed | Removal effect | 98.75% interval | Calm pairs |',
+    rows = ['| Model | Eligible games / completed | Price change after punishment removed | 98.75% interval | Paired games |',
             '|---|---:|---:|---:|---:|']
     for row in effects.itertuples():
         g = games[games.model == row.model]

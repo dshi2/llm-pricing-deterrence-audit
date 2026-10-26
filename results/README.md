@@ -1,5 +1,5 @@
 # Included results
 
-These are verified analysis exports used for the reported tables. The export manifest records the source and bundled hashes; only absolute run-folder prefixes were removed. The README figure and table can be regenerated from these included files without model calls.
+The CSV files in `exports/` are the analysis outputs behind the report's tables, copied from the final analysis run. `export_manifest.json` records each file's hash before and after copying; the only change was replacing absolute run-folder paths with folder names.
 
-This is export-to-figure reproducibility. The complete raw run archive and a fresh raw-journal-to-paper rebuild remain pending. These files are processed exports, not raw collection data.
+`python -m scripts.build_readme_results` checks those hashes and rebuilds the README table and results figure from these files, without model calls. They are processed outputs, not raw run data; the raw journals are not included in this repository.

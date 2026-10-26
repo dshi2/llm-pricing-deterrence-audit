@@ -14,21 +14,21 @@ Two experiments with LLM pricing agents:
 ## Results
 
 <!-- RESULTS:START -->
-| Model | Eligible pricing games / completed | Removal effect | 98.75% interval | Calm pairs |
+| Model | Eligible games / completed | Price change after punishment removed | 98.75% interval | Paired games |
 |---|---:|---:|---:|---:|
 | DeepSeek | 4/4 | +0.0818 | [0.0783, 0.0854] | 8 |
 | Qwen | 1/4 | +0.0600 | [0.0151, 0.1049] | 7 |
 <!-- RESULTS:END -->
 
-- One rival was enough to make the cut unprofitable in four of five eligible games; no game needed both.
-- Three Qwen games did not meet the eligibility threshold, so their gains are undefined, not zero.
-- Removing retaliation raised prices for both models. This does not show that the models learned deterrence or noticed the removal.
+- In four of the five eligible games, one responding rival was enough to make the cut unprofitable. In no game did the cut become unprofitable only when both rivals responded.
+- Three Qwen games were not eligible: the cut would not have gained at least 1% of profit even with no rival responding. Their gains are undefined, not zero.
+- When the rival stopped punishing, both models raised their prices. This does not show that the models had learned to fear punishment or noticed that it had stopped.
 
 ![Results](figures/results_summary.png)
 
 **Figure 2.** *Left: the gain from seller A's price cut in each of the five eligible games (four DeepSeek, one Qwen), by which rivals were allowed to respond. Lines join the conditions within one game, and points below zero mean the cut lost money. One responding rival was enough to make the cut unprofitable in four games; in DeepSeek game 4 the cut still paid when both rivals responded. Right: the rise in the seller's mean price when the rival's punishment was removed, with memory kept, shown with 98.75% intervals (8 DeepSeek and 7 Qwen paired games).*
 
-Per-game and summary numbers are in [results/exports](results/README.md). Rebuild the table and figure with `python -m scripts.build_readme_results` (no API calls).
+Per-game and summary numbers are in [results/exports](results/exports/) ([what these files are](results/README.md)). Rebuild the table and figure with `python -m scripts.build_readme_results` (no API calls).
 
 ## Install and test
 
@@ -54,7 +54,7 @@ python -m scripts.check_retaliation_controls --out reports/experiment2-controls
 python -m scripts.build_paper_diagrams --out reports/designs
 ```
 
-Each data folder holds one model's saved `game_*.jsonl` journals. The raw run archive is not bundled yet. These commands make no model calls.
+Each `data/...` path is one model's saved run folder with its `game_*.jsonl` journals. The raw journals are not included in this repository, so these commands need a copy of them. They make no model calls.
 
 ## Layout
 
@@ -82,8 +82,8 @@ The version submitted with the report is tagged [`pre-maintenance-2026-10-26`](h
 
 ## Source
 
-Author: **Drishti Sharma, Independent**. Exported from the sprint source recorded in `provenance/source.json`. The companion paper's code is in [covert-channel-evidence-audit](https://github.com/dshi2/covert-channel-evidence-audit).
+Author: **Drishti Sharma, Independent**. `provenance/source.json` records the sprint source commit and the hash of every file in this release. The companion paper's code is in [covert-channel-evidence-audit](https://github.com/dshi2/covert-channel-evidence-audit).
 
 The market model and prompts come from [the Apart starter](https://github.com/poseidon-research/collusion_hackathon), based on [algorithmic_pricing_llms](https://github.com/luciasauer/algorithmic_pricing_llms); it is fetched, not bundled, and keeps its own license. The code in this repository is released under the [MIT License](LICENSE).
 
-Some names from the sprint remain because they are stored in the run data: Experiment 1 games are recorded as `main` and Experiment 2 runs live in folders named `fallback1_*`.
+Each run file records Experiment 1 as `main` and Experiment 2 as `replacement`. The collection notebook saved Experiment 2 runs to `runs/fallback1_v2`, one folder per model named `fallback1_<model>`. These names are kept so the code matches the saved runs.
