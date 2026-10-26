@@ -11,6 +11,7 @@
 - Shortened the README and the reproduction guide.
 
 - Matched the citation titles to the reports, set the minimum Python version to 3.12 removed figure-drafting notes and added the MIT License.
+- Removed the evidence-audit files from the collection snapshots and the source file list; the remaining snapshot files are unchanged.
 
 No experiment settings, saved results, statistical definitions or submitted PDFs were changed.
 
