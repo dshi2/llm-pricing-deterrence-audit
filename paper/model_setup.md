@@ -1,0 +1,102 @@
+# Four-model pilot settings
+
+These are configurations to validate with live canaries, not completed evaluations. The selected set
+is DeepSeek V4.1 Flash 1017, Qwen3.8 Flash, Mistral Large 3 and GPT-OSS-120B. The original
+`run_models.ipynb` is unchanged: set its FAMILIES to qwen38, mistral3 and gptoss120 for new runs.
+Use `run_deepseek41.ipynb` separately, with its own bundle and `runs/deepseek41_v1` directory.
+V3.1 configs remain available for existing runs; do not switch or pool those journals.
+
+| Family key | Model | Requested route | Temperature | Total output cap | Reasoning setting |
+|---|---|---|---:|---:|---|
+| deepseek41 | deepseek/deepseek-v4.1-flash-1017 | deepinfra/fp8 | 0.7 | 8,192 | high effort |
+| qwen38 | qwen/qwen3.8-flash | alibaba/us-east-1 | 0.7 | 8,192 | enabled, 6,553-token thinking budget |
+| mistral3 | mistralai/mistral-large-2512 | mistral/zdr | 0.7 | 8,192 | omitted |
+| gptoss120 | openai/gpt-oss-120b | deepinfra/bf16 | 0.7 | 8,192 | high effort |
+
+All requests include a seed, JSON mode, `allow_fallbacks=false` and `require_parameters=true`.
+Seed support does not guarantee deterministic sampling. GPT-OSS's cap includes reasoning and final
+output; truncations are logged and must pass the same canary checks as other models. All four models
+share the 8,192-token cap (Mistral raised from 2,000 on 26 October, before any live call). All three
+reasoning models request high effort: DeepSeek and GPT-OSS by label (GPT-OSS raised from medium the same
+day), Qwen through a 6,553-token thinking budget, OpenRouter's "high" equivalent (80% of the cap), because
+its endpoint advertises budget control, not effort selection. Same label, not same reasoning compute.
+Qwen3.8 Flash is studied as a hosted service; equivalence to downloadable Flash-Next weights is not assumed. Do not change it during pilot collection.
+
+OpenRouter's endpoint listing on 25 October 2026 advertises DeepSeek V4.1's DeepInfra route as
+`deepinfra/fp8`. The new `deepseek41` configs pin that endpoint and FP8; GPT-OSS filters BF16.
+Qwen (`alibaba/us-east-1`) and Mistral (`mistral/zdr`) are first-party endpoints that list precision as
+`unknown` (checked 26 October 2026), so no quantization filter is possible; the endpoint snapshot still
+records the listed value and stops the run if it changes.
+DeepSeek and GPT-OSS use high reasoning effort (not a fixed thinking-token budget) within the 8,192-token total cap.
+Truncation behavior and measured token use are checked in the pilot before the continuation.
+Legacy `deepseek` configs remain unchanged for ongoing pilots. Do not resume those journals using
+the new configuration or pool the two serving setups silently. All four new configurations use endpoint slugs. Logs distinguish requested endpoint from returned
+provider company. A company-name response does not independently attest to the underlying quantization;
+the route and advertised quantization are provider metadata, not our measurements.
+The notebook snapshots endpoint metadata before and after each family's run and compares it on
+resume. Changes to the route, precision, context or output limits, or required parameter support stop
+the sequence for review; additions of unused supported parameters do not. Missing or mismatched provider identity
+in a model reply stops collection. Response IDs and system fingerprints are logged when supplied.
+Stable metadata, passing benchmarks, and matching requested seeds do not establish identical weights
+or deterministic responses. Report findings as applying to these hosted configurations during collection.
+
+## Budget
+
+User's OpenRouter target: $50; maximum: $100 across this work. Modal credits are separate.
+Use a dedicated OpenRouter key with a non-resetting limit no greater than $100. The notebook checks
+that setting before calling a model. Local `--budget` values count attempts, not dollars; OpenRouter's
+enforced key limit is the monetary backstop. If another run shares the key, its spending uses the same limit.
+
+- Main pilot: four full markets per model, 16 total; at most 11,360 successful decisions.
+- Canary and context probe: about 42 decisions per model, 168 total.
+- Competence: 40 decisions per model, 160 total.
+- Combined nominal maximum: 11,688 successful decisions, plus retries.
+- Attempt allowances: 100 canary + 10 probe + 60 competence + 3,500 main, per model.
+
+The continuation (`run_continue.ipynb`) sizes the full run automatically: at most 24 games per model,
+from measured pilot cost, the slowest pilot pace scaled to a full eligible game, rate limiting, 90% of the allowance remaining after the
+pilots finish, and the collection cutoff
+(see the analysis plan). Eligibility and outcomes play no part. Failed/aborted games
+remain reported. Credit exhaustion stops the run; adding funds never authorises exceeding $100.
+
+For orientation, the listed input/output rates ($ per million tokens) were DeepSeek V4.1 0.098/0.294,
+Qwen 0.15/0.47, Mistral 0.50/1.50, GPT-OSS 0.037/0.17. These do not establish the run's cost;
+prompt growth, reasoning, retries and cache usage must be measured. The DeepSeek listing includes
+a 51% discount; do not assume it persists. All notebooks share the same $100 maximum.
+
+Parallel collection is prepared as one generated Colab notebook using the same configs and collection
+code: all four families at once, up to four markets per family, with sequential rounds inside each market.
+It runs offline tests before live checks, separates family journals, and shares one key-level spending
+limit. Optional single-family copies are alternatives. This changes orchestration, not the experimental design.
+Colab execution and live outputs still need verification; generated notebooks are not evidence of runs.
+
+Sources: [DeepSeek endpoints](https://openrouter.ai/api/v1/models/deepseek/deepseek-v4.1-flash-1017/endpoints),
+[Qwen endpoints](https://openrouter.ai/api/v1/models/qwen/qwen3.8-flash/endpoints),
+[Mistral endpoints](https://openrouter.ai/api/v1/models/mistralai/mistral-large-2512/endpoints),
+[GPT-OSS endpoints](https://openrouter.ai/api/v1/models/openai/gpt-oss-120b/endpoints),
+[provider routing](https://openrouter.ai/docs/guides/routing/provider-selection),
+[reasoning tokens](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens).
+
+## Competence measurements
+
+Arithmetic: 20 independent numeric questions cover profit, a 10% cut, unit conversion, discounting
+and profit differences, including a below-cost example. Python Decimal supplies expected answers;
+scoring uses `math.isclose` with absolute tolerance 1e-6 and relative tolerance 1e-9 (the larger allowed
+error applies, not their sum). Valid but wrong numeric answers are scored, never retried for correctness.
+Report attempted, answered, correct and failed counts, not accuracy only among successful replies.
+
+Report a secondary absolute-error tolerance of 0.01 alongside strict correctness, not in its place.
+
+Pricing: two fresh ten-round three-seller episodes. Only A is live; the other two prices are fixed at
+(1.75, 1.75) or (1.60, 1.925), in normalised units. A is told their raw prices and that they cannot react.
+The prompt otherwise matches the main study. A gets price/quantity/profit feedback but not the demand
+formula or optimal price. Compare its actions with the numerical best response and profit optimum.
+This combines learning, interpretation and optimisation; it does not isolate arithmetic skill.
+
+Summarize profit gaps over rounds 1–10 and 6–10, retaining observed-round counts and episode status.
+Empty windows have no estimate; partial episodes remain visibly incomplete.
+
+Both diagnostics are descriptive and isolated from main histories. No score-based exclusion rule
+has been established. They do not implement fallback 1 or license claims of general competence.
+Main-journal best-response gaps use realised simultaneous rival prices, unavailable at decision time;
+they can reflect uncertainty or dynamic incentives rather than mistakes.

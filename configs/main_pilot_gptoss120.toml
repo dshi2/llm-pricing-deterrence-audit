@@ -1,0 +1,16 @@
+# Main study, pilot slice (seeds 1-4). The continuation adds seeds 5..N to the same run directory.
+name = "main_gptoss120"
+experiment = "main"
+seeds = [1, 2, 3, 4]
+concurrency = 4
+
+[model]
+model = "openai/gpt-oss-120b"
+provider = "DeepInfra"
+provider_route = "deepinfra/bf16"
+quantization = "bf16"
+reasoning_effort = "high"  # same label as DeepSeek
+temperature = 0.7
+max_tokens = 8192  # reasoning and final reply share this allowance
+prefix = "P1"
+units = "consistent"  # cost and profit in the price currency (see sprint/prompt.py)

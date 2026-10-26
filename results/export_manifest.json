@@ -1,0 +1,26 @@
+{
+  "basis": "Verified saved analysis exports; not a fresh raw-journal rebuild.",
+  "transformation": "Only absolute run paths replaced with their final folder names; numeric fields unchanged.",
+  "files": {
+    "experiment1_games.csv": {
+      "source_export_sha256": "4808c67a9a079c991d1d92ae55c7e3b7b556fd04ef6278aac7718b6d8dc5f501",
+      "bundled_sha256": "fac065d6a93a673b4a04342008ca7d0cd6e2d29de9312909c1724e0cdae0074e",
+      "rows": 8
+    },
+    "experiment1_primary.csv": {
+      "source_export_sha256": "7da5143a4c7d890e0acba73cbccfbc686dcd985086bc5089b43e7382ad6ce4e8",
+      "bundled_sha256": "7e6254cf1ba5451eaadb232d5439c32bbef56673cec9bc5fec3c513da3f3863f",
+      "rows": 8
+    },
+    "experiment2_deepseek_summary.csv": {
+      "source_export_sha256": "2142efe581a4528052a4acb3282497f98471d1d7c684190d5a4cc1fe81533239",
+      "bundled_sha256": "e2aa65046f170854f832a5a44719a64a9f03fea9bc567f31f401f228a5784ba2",
+      "rows": 20
+    },
+    "experiment2_qwen_summary.csv": {
+      "source_export_sha256": "8512212cc10799ce22cb2fb653e4970caadd595661bafda57049ff721cf3adf6",
+      "bundled_sha256": "0482edb6a77ed353ffdbb31331cc46772c21636256a54adaf36cd9b48dcacbe1",
+      "rows": 40
+    }
+  }
+}

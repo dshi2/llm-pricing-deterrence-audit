@@ -1,0 +1,21 @@
+# Integration canary only: tiny game, NOT a main-study game (its rules differ, so it never pools).
+name = "canary_gptoss120"
+experiment = "main"
+seeds = [901]
+concurrency = 1
+
+[model]
+model = "openai/gpt-oss-120b"
+provider = "DeepInfra"
+provider_route = "deepinfra/bf16"
+quantization = "bf16"
+reasoning_effort = "high"  # same label as DeepSeek
+temperature = 0.7
+max_tokens = 8192  # reasoning and final reply share this allowance
+prefix = "P1"
+units = "consistent"  # cost and profit in the price currency (see sprint/prompt.py)
+
+[rules]
+parent_rounds = 5
+horizon = 2
+cut_rounds = 1

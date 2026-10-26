@@ -1,0 +1,15 @@
+name = "fallback1_gptoss120"
+experiment = "replacement"
+seeds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+concurrency = 10  # seeds start in order, so 1-10 (the original ten-game plan) run first
+
+[model]
+model = "openai/gpt-oss-120b"
+provider = "DeepInfra"
+provider_route = "deepinfra/bf16"
+quantization = "bf16"
+reasoning_effort = "high"  # same label as DeepSeek
+temperature = 0.7
+max_tokens = 8192  # reasoning and final reply share this allowance
+prefix = "P1"
+units = "consistent"  # cost and profit in the price currency (see sprint/prompt.py)

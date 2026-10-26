@@ -1,0 +1,18 @@
+# Integration canary only: tiny game, NOT a main-study game (its rules differ, so it never pools).
+name = "canary_deepseek"
+experiment = "main"
+seeds = [901]
+concurrency = 1
+
+[model]
+model = "deepseek/deepseek-chat-v3.1"
+provider = "DeepInfra"
+temperature = 0.7
+max_tokens = 2000
+prefix = "P1"
+units = "consistent"  # cost and profit in the price currency (see sprint/prompt.py)
+
+[rules]
+parent_rounds = 5
+horizon = 2
+cut_rounds = 1

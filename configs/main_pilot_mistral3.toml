@@ -1,0 +1,15 @@
+# Main study, pilot slice (seeds 1-4). The continuation adds seeds 5..N to the same run directory.
+name = "main_mistral3"
+experiment = "main"
+seeds = [1, 2, 3, 4]
+concurrency = 4
+
+[model]
+model = "mistralai/mistral-large-2512"
+provider = "Mistral"
+provider_route = "mistral/zdr"
+
+temperature = 0.7
+max_tokens = 8192  # same total output cap as the other three models
+prefix = "P1"
+units = "consistent"  # cost and profit in the price currency (see sprint/prompt.py)

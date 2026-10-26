@@ -1,0 +1,14 @@
+name = "fallback1_deepseek31"
+experiment = "replacement"
+seeds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+concurrency = 5  # two waves of five: if credit runs out, the first wave is already complete
+
+[model]
+model = "deepseek/deepseek-chat-v3.1"
+provider = "DeepInfra"
+provider_route = "deepinfra/fp4"
+quantization = "fp4"
+temperature = 0.7
+max_tokens = 2000
+prefix = "P1"
+units = "consistent"  # cost and profit in the price currency (see sprint/prompt.py)

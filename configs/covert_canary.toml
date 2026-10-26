@@ -1,0 +1,5 @@
+name = "covert_canary"
+experiment = "covert_audit"
+scheme = "direct"
+seeds = [99]
+concurrency = 4

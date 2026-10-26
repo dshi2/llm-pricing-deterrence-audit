@@ -1,0 +1,14 @@
+name = "fallback1_qwen38"
+experiment = "replacement"
+seeds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+concurrency = 10  # seeds start in order, so 1-10 (the original ten-game plan) run first
+
+[model]
+model = "qwen/qwen3.8-flash"
+provider = "Alibaba"
+provider_route = "alibaba/us-east-1"
+reasoning_max_tokens = 6553  # OpenRouter's "high": 80% of the 8,192 cap
+temperature = 0.7
+max_tokens = 8192  # reasoning plus final reply
+prefix = "P1"
+units = "consistent"  # cost and profit in the price currency (see sprint/prompt.py)

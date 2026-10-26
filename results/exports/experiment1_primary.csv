@@ -1,0 +1,9 @@
+run,setup,model,stage,outcome,eligible,mean,lo,hi,method,level,interpretation,scope,leave_one_out_min,leave_one_out_max
+main_deepseek41,ce3a7ba9,deepseek/deepseek-v4.1-flash-1017,pilot,S,4,3.8834056340153325,-185.34759458356336,193.11440585159403,"Student-t, Bonferroni over 16 planned intervals",0.996875,sign unresolved,exploratory,-17.589770681955347,12.536061647890913
+main_deepseek41,ce3a7ba9,deepseek/deepseek-v4.1-flash-1017,pilot,J,4,-34.721459926983414,-149.59358646662093,80.15066661265412,"Student-t, Bonferroni over 16 planned intervals",0.996875,sign unresolved,exploratory,-47.1008488282103,-26.683476650188698
+main_deepseek41,ce3a7ba9,deepseek/deepseek-v4.1-flash-1017,pilot,M,4,0.373712534205044,-200.28781642250897,201.03524149091908,"Student-t, Bonferroni over 16 planned intervals",0.996875,sign unresolved,exploratory,-22.256967238784853,10.186833811280684
+main_deepseek41,ce3a7ba9,deepseek/deepseek-v4.1-flash-1017,pilot,S_minus_J,4,38.604865560998746,-47.78858440823721,124.9983155302347,"Student-t, Bonferroni over 16 planned intervals",0.996875,sign unresolved,exploratory,29.51107814625495,44.193711266582135
+main_qwen38,9fd676b8,qwen/qwen3.8-flash,pilot,S,1,-2.014025698880701,,,"Student-t, Bonferroni over 16 planned intervals",0.996875,uncertainty unavailable,exploratory,,
+main_qwen38,9fd676b8,qwen/qwen3.8-flash,pilot,J,1,-22.676351937728725,,,"Student-t, Bonferroni over 16 planned intervals",0.996875,uncertainty unavailable,exploratory,,
+main_qwen38,9fd676b8,qwen/qwen3.8-flash,pilot,M,1,-14.078032072986218,,,"Student-t, Bonferroni over 16 planned intervals",0.996875,uncertainty unavailable,exploratory,,
+main_qwen38,9fd676b8,qwen/qwen3.8-flash,pilot,S_minus_J,1,20.662326238848024,,,"Student-t, Bonferroni over 16 planned intervals",0.996875,uncertainty unavailable,exploratory,,

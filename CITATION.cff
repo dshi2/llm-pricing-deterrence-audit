@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "Cite the paper and the exact code release used."
+type: software
+title: "Counterfactual deterrence audits of LLM pricing agents"
+authors:
+  - family-names: Sharma
+    given-names: Drishti
+    affiliation: Independent
+repository-code: "https://github.com/dshi2/llm-pricing-deterrence-audit"
+version: 0.1.0
