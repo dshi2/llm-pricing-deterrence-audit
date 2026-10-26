@@ -86,6 +86,20 @@ This release contains the committed collection/analysis code, configurations, sc
 
 Use a stable copy of the run folders. `run_saved_report.py` hashes inputs before/after analysis and records source hashes, git revision, Python/library versions and output hashes. Keep the manifest with the generated tables. See [REPORTING.md](REPORTING.md) for the table/figure-to-script map.
 
+## Repository layout
+
+```text
+paper/       Protocols and scripted-control outputs
+notebooks/   Rival-response and retaliation-removal launchers; results review
+sprint/      Collection engines and analysis modules
+scripts/     Offline controls, table builders and figure generators
+results/     Verified numerical exports and their hashes
+figures/     Design diagram and results figure
+tests/      Regression and measurement checks
+```
+
+See [paper materials](paper/README.md) and [reproduction commands](REPORTING.md). Some shared compatibility modules remain in this release; the directories are not yet a minimal dependency split.
+
 ## Source and shared infrastructure
 
 Author: **Drishti Sharma, Independent**. This standalone repository was exported from the committed sprint source recorded in `provenance/source.json`. The two paper releases retain the same tested shared `sprint` engine and compatibility modules; only the paper-specific launch notebooks are exposed. Shared reporting imports and their regression fixtures retain compatibility modules for the original source tree; these are not additional studies claimed by this paper. No uncommitted launcher edits, API credentials, live outputs or internal manuscript drafts are included.

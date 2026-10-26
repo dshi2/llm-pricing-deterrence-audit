@@ -15,7 +15,7 @@ from sprint.fallback1_analyze import launch_checks
 from sprint.fallback1_run import full_context_request, header
 from sprint.market import Market
 
-NOTEBOOK = Path('notebooks/fallback1.ipynb')
+NOTEBOOK = Path('notebooks/retaliation_removal.ipynb')
 
 
 def function(name, ns):

@@ -1,4 +1,6 @@
-# Fallback 1: do LLM pricing agents adapt when retaliation is removed?
+# Retaliation-removal experiment: protocol
+
+> Historical collection protocol. The descriptive filename and heading were updated during repository cleanup; the original planning language, rules and command identifiers are retained below. Final results and documented collection deviations are reported in the paper and README.
 
 Implementation specification, 25 October 2026. Offline validation only; no live results are claimed.
 This is an alternative study, not part of the main deterrence experiment's primary sample.
@@ -177,7 +179,7 @@ are 1e-12 for prices, 1e-5 for path profits and 2e-5 for profit contrasts. Expor
 absolute error; do not describe these matches as exact. These controls validate the implemented cases,
 not LLM behavior or absence of all possible bugs.
 
-Offline results (`fallback1_controls.csv`): all 18 contrasts passed. Constant pricing yields zero
+Offline results (`retaliation_removal_controls.csv`): all 18 contrasts passed. Constant pricing yields zero
 effects. The price-responsive control has a removal effect of −0.09 normalized price units and
 +74.852905 discounted profit units, with zero context interaction. The reset-sensitive control has
 zero retained-context removal effect and an interaction of −0.09 price units / +74.852905 profit units.
@@ -203,7 +205,7 @@ The stopping rule depends on spending and time only, never on results. Failed an
 `python -m sprint.fallback1_run configs/fallback1_pilot_<family>.toml --out runs --budget 7000`
 
 Use `--dry-run` to inspect calls and `--stub` for an offline end-to-end demonstration. The standalone
-`notebooks/fallback1.ipynb` runs offline checks, the OpenRouter key-limit check, endpoint snapshots,
+`notebooks/retaliation_removal.ipynb` runs offline checks, the OpenRouter key-limit check, endpoint snapshots,
 a two-seller canary and full-context probe, a launch gate, twenty games per family, and CSV exports.
 The notebook reads its own key, `COLLUSION_F1_KEY`, from Colab Secrets, with no fallback to the
 main study's or an organisation's secret, and refuses a key whose limit exceeds $60. The four models match the main lineup, including DeepSeek V4.1 Flash 1017.

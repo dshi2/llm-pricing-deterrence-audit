@@ -97,6 +97,6 @@ Summarize profit gaps over rounds 1–10 and 6–10, retaining observed-round co
 Empty windows have no estimate; partial episodes remain visibly incomplete.
 
 Both diagnostics are descriptive and isolated from main histories. No score-based exclusion rule
-has been established. They do not implement fallback 1 or license claims of general competence.
+has been established. They do not implement the retaliation-removal experiment or license claims of general competence.
 Main-journal best-response gaps use realised simultaneous rival prices, unavailable at decision time;
 they can reflect uncertainty or dynamic incentives rather than mistakes.
