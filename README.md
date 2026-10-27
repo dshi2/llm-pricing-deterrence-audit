@@ -70,7 +70,7 @@ tests/      Tests
 
 ## What is new and when it was done
 
-This project was carried out entirely within the Apart AI Collusion Research Sprint (23–26 October 2026). No code or data predates the sprint; the first commit is from 25 October 2026.
+This project was carried out entirely within the Apart AI Collusion Research Sprint (23–26 October 2026). No code or data predates the sprint.
 
 It builds on the sprint starter kit ([poseidon-research/collusion_hackathon](https://github.com/poseidon-research/collusion_hackathon), commit `d585a7b`), which packages the pricing harness of Romero, Sauer and Peist:
 
